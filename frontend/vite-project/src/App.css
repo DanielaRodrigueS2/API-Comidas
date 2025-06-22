@@ -1,0 +1,55 @@
+html, body, #root{
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.geral{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between; 
+    
+}
+
+.geral.normal{
+    background-color: rgb(37, 22, 5);
+}
+
+.geral.reverso{
+    background-color: rgb(216, 114, 11);
+}
+
+
+.header{
+    display: flex;
+    width: 80%;
+    height: 10%;
+    justify-content: center ;
+    align-items: center;
+    gap: 5rem;
+    background-color: rgb(246, 226, 127);
+}
+
+.BotaoTroca{
+    display: flex;
+}
+
+.main{
+    display: flex;
+    width: 80%;
+    height: 60%;
+    margin: auto;
+    align-items: center;
+    background-color: rgb(226, 195, 145);
+}
+
+select, input, button{
+    border: 5px;
+    border-radius: 5px;
+    background-color: rgb(216, 161, 71);
+    border-radius: 2px;
+    border-color: black;
+}

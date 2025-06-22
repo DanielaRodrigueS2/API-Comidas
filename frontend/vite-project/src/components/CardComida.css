@@ -1,0 +1,29 @@
+.card{
+    display: flex;
+    height: 50%;
+    width: 20%;
+    position: fixed;
+    justify-content: space-evenly;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(112, 55, 13);
+    z-index: 9000;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+}
+
+.card img {
+  max-width: 30%;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.card h2, .card h3{
+  word-wrap: break-word;     
+  overflow-wrap: break-word; 
+  max-width: 100%;
+  margin: 10px 0;
+  text-align: center;
+}
