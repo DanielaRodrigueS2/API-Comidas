@@ -8,7 +8,7 @@ yarn-error.log*
 .env
 
 # Firebase Admin SDK key
-src/firebase/serviceAccountKey.json
+src/config/serviceAccountKey.json
 
 # Editor configs
 .vscode/
