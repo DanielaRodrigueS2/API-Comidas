@@ -6,7 +6,6 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
 
-async function autenticaToken(req,res,next){
+const db = admin.firestore();
 
-
-}
+module.exports = {admin, db};
