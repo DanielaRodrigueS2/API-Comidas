@@ -6,6 +6,8 @@ import SwiperComponente from './components/SwiperComponente'
 import { ContextoTema} from './contexts/ContextoTema'
 import CardComida from './components/CardComida'
 
+const URL_API = ""
+
 // Armazena o Tipo de pesquisa e seu valor correpondente, armazena os resultados, erros e status
 const estadoInicial = {
 

@@ -11,8 +11,8 @@ function SwiperComponente(props){
             
         >
             {props.resultados.map((item) => (
-                <SwiperSlide key={item.idMeal} onClick={() => props.clicado(item)}>
-                    <img src={item.strMealThumb} alt={item.strMeal} className='img'/>
+                <SwiperSlide key={item.id} onClick={() => props.clicado(item)}>
+                    <img src={item.strMealThumb} alt={item.nome} className='img'/>
                 </SwiperSlide>
             ))} 
 

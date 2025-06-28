@@ -13,7 +13,6 @@ const validaString = (str) =>{
 
 const ComidaModel = {
     async getAll(){
-        if(!validaString(area)) throw new Error('String inválida');
         try{
             const snapshot = await collection.get();
             const comidas = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
@@ -21,6 +20,69 @@ const ComidaModel = {
         }
         catch(eroor){
             throw new Error('Erro ao encontrrar todas as comidas', eroor);
+        }
+    },
+
+    async getAllAreas(){
+        try{
+            const snapshot = await collection.get();
+            const areasSet = new Set();
+            
+
+            snapshot.forEach(doc =>{
+                const data = doc.data();
+                if (data.area){
+                    areasSet.add(data.area)
+                }
+
+            })
+
+            return Array.from(areasSet);
+        }
+        catch(error){
+            throw new Error('Erro ao retonar areas')
+        }
+    },
+
+    async getAllTipos(){
+        try{
+            const snapshot = await collection.get();
+            const tiposSet = new Set();
+            
+
+            snapshot.forEach(doc =>{
+                const data = doc.data();
+                if (data.tipo){
+                    tiposSet.add(data.tipo)
+                }
+
+            })
+
+            return Array.from(tiposSet);
+        }
+        catch(error){
+            throw new Error('Erro ao retonar tipos')
+        }
+    },
+
+    async getAllIngredientes(){
+        try{
+            const snapshot = await collection.get();
+            const ingredienteSet = new Set();
+            
+
+            snapshot.forEach(doc =>{
+                const data = doc.data();
+                if (data.ingrediente){
+                    data.ingrediente.forEach(ingrediente => {ingredienteSet.add(ingrediente)})
+                }
+
+            })
+
+            return Array.from(ingredienteSet);
+        }
+        catch(error){
+            throw new Error('Erro ao retonar ingredientes')
         }
     },
     

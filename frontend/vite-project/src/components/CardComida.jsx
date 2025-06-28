@@ -6,10 +6,10 @@ function CardComida(props){
 
     return(
         <div className='card'>
-            <img src={item.strMealThumb}/>
-            <h2>Nome: {item.strMeal}</h2>
-            <h2>Categoria: {item.strCategory}</h2>
-            <h2>Area: {item.strArea}</h2>
+            <img src='../../public/comida.jpg'/>
+            <h2>Nome: {item.nome}</h2>
+            <h2>Categoria: {item.tipo}</h2>
+            <h2>Area: {item.area}</h2>
             <button onClick={() => props.clicado(null)}>Fechar</button>
         </div>
     );
