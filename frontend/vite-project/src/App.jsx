@@ -5,8 +5,9 @@ import './App.css'
 import SwiperComponente from './components/SwiperComponente'
 import { ContextoTema} from './contexts/ContextoTema'
 import CardComida from './components/CardComida'
+import menuLogin from './components/menuLogin'
 
-const URL_API = ""
+const URL_API = "http://localhost:3000"
 
 // Armazena o Tipo de pesquisa e seu valor correpondente, armazena os resultados, erros e status
 const estadoInicial = {
@@ -61,6 +62,9 @@ const reducer =  (state, action) =>{
 
 function App() {
 
+  // token 
+  const [token, setToken] = useState(null)
+
   // Tema do use Context
   const {tema, trocarTema} = useContext(ContextoTema)
 
@@ -96,9 +100,9 @@ function App() {
     const carregarListas = async () =>{
       try{
         const [ingredientes, categorias, locais] = await Promise.all([
-          fetch('https://www.themealdb.com/api/json/v1/1/list.php?i=list'), //Adicionar os links
-          fetch('https://www.themealdb.com/api/json/v1/1/list.php?c=list'),
-          fetch('https://www.themealdb.com/api/json/v1/1/list.php?a=list'),
+          fetch(`${URL_API}/comidas/ingrediente`, {headers: {Authorization: `Bearer ${token}` }}),
+          fetch(`${URL_API}/comidas/tipo`, {headers: {Authorization: `Bearer ${token}` }}),
+          fetch(`${URL_API}/comidas/area`, {headers: {Authorization: `Bearer ${token}` }}),
         ])
 
         const [ingredientesJSON, categoriasJSON, locaisJSON] = await Promise.all([
@@ -107,9 +111,9 @@ function App() {
           locais.json()
         ])
 
-        setListas({ingredientes : ingredientesJSON.meals.map((m) => m.strIngredient),
-          categorias : categoriasJSON.meals.map((m) => m.strCategory),
-          locais : locaisJSON.meals.map((m) => m.strArea)
+        setListas({ingredientes : ingredientesJSON,
+          categorias : categoriasJSON,
+          locais : locaisJSON
         })
       
       }
@@ -130,20 +134,20 @@ function App() {
       let url  = ''
 
       if(state.filtros.Tipo == 'Ingrediente Principal'){
-        url = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${state.filtros.Valor}`
+        url = `${URL_API}/comida/ingrediente/${state.filtros.Valor}`
       }
       else if(state.filtros.Tipo == 'Categoria'){
-        url = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${state.filtros.Valor}`
+        url = `${URL_API}/comida/tipo/${state.filtros.Valor}`
       }
       else if(state.filtros.Tipo == 'Local'){
-        url = `https://www.themealdb.com/api/json/v1/1/filter.php?a=${state.filtros.Valor}`
+        url = `${URL_API}/comida/area/${state.filtros.Valor}`
       }
 
       if (!url) return;
 
-      const resposta = await fetch(url)
+      const resposta = await fetch(url, {headers: {Authorization: `Bearer ${token}`}})
       const json = await resposta.json()
-      dispatch({type: 'SET_RESULTADOS', payload: json.meals || []})
+      dispatch({type: 'SET_RESULTADOS', payload: json || []})
 
     }
     catch(error){
@@ -163,10 +167,10 @@ function App() {
     const resgataComida = async () => {
       try{
 
-        const url = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${item.idMeal}`
-        const resposta = await fetch(url)
+        const url = `${URL_API}/comidas/${item.uid}`
+        const resposta = await fetch(url, {headers: {Authorization: `Bearer ${token}`}})
         const json = await resposta.json()
-        setComida(json.meals[0])
+        setComida(json)
         console.log('Comida: ',comida)
 
       }
@@ -197,9 +201,27 @@ function App() {
     console.log(state.resultados)
   }, [state.resultados])
 
+  // armazenar token
+  useEffect(() =>{
+    const tokenNoStorage = localStorage.getItem('token');
+    if (tokenNoStorage){
+      setToken(tokenNoStorage);
+    }
+  }, [])
+
+  const handleSetToken = (token) =>{
+    localStorage.setItem('token', token);
+    setToken(token)
+  }
   
+  //Se não houver token, aparece a tela de login
+  if(!token){
+    return <MenuLogin setToken={handleSetToken} />
+  }
 
   return (
+
+
 
     <div className={`geral ${tema === 'Normal' ? 'normal' : 'reverso'}`}>
       <div className='header'>

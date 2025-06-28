@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../config/firestore')
-const {getAll, getByArea, getByIngrediente, getByTipo, getAllAreas, getAllIngredientes, getAllTipos, create} = require('../models/comidaModel')
+const {getAll, getById, getByArea, getByIngrediente, getByTipo, getAllAreas, getAllIngredientes, getAllTipos, create} = require('../models/comidaModel')
 
 router.get('/comidas', auth, async (req, res) => {
     try{
@@ -9,6 +9,17 @@ router.get('/comidas', auth, async (req, res) => {
         res.json(comidas); 
     }
     catch(error){
+        res.status(500).json({error: error.message});
+    }
+});
+
+router.get('/comidas/:id', auth, async (req,res) =>{
+    const {id} = req.params
+    try{
+        const comida = await getById(id);
+        res.json(comida);
+    }
+    catch{(error)
         res.status(500).json({error: error.message});
     }
 });

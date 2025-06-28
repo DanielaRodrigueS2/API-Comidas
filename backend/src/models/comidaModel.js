@@ -23,6 +23,18 @@ const ComidaModel = {
         }
     },
 
+    async getById(){
+        try{
+            const doc = await collection.doc(id).get();
+            if (!doc.exists) throw new Error('Comida Inexistente');
+
+            return{id: doc.id, ...doc.data()}
+        }
+        catch(error){
+            throw new Error('Comida não encontrada');
+        }
+    },
+
     async getAllAreas(){
         try{
             const snapshot = await collection.get();
