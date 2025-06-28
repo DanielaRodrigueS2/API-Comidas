@@ -1,9 +1,9 @@
-import './menuLogin.css'
+import './MenuLogin.css'
 import { useState } from 'react';
 import {signInWithEmailAndPassword} from 'firebase/auth'
 import { auth } from '../firebaseconfig';
 
-function menuLogin({setToken}){
+function MenuLogin({setToken}){
 
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
@@ -30,7 +30,7 @@ function menuLogin({setToken}){
 
     return(
         <div className='login'>
-            <form onSubmit={handleLogin}>
+            <form onSubmit={handleLogin} className='forms'>
                 <label>Email</label>
                 <input type='email'value={email} onChange={(e) => setEmail(e.target.value)}></input>
                 <label>Senha</label>
@@ -45,4 +45,4 @@ function menuLogin({setToken}){
 
 }
 
-export default menuLogin
+export default MenuLogin

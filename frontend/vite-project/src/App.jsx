@@ -5,7 +5,7 @@ import './App.css'
 import SwiperComponente from './components/SwiperComponente'
 import { ContextoTema} from './contexts/ContextoTema'
 import CardComida from './components/CardComida'
-import menuLogin from './components/menuLogin'
+import MenuLogin from './components/MenuLogin'
 
 const URL_API = "http://localhost:3000"
 

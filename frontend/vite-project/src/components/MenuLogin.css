@@ -1,0 +1,25 @@
+.login{
+    display: flex;
+    height: 100%;
+    width: 100%;
+    justify-content: space-evenly;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(112, 55, 13);
+
+}
+
+.forms{
+    display: flex;
+    flex-direction: column;
+}
+
+.erro{
+    display: flex;
+    color: red;
+}
+
+button{
+    height: 100;
+    width: 100;
+}

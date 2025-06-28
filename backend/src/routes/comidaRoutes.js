@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../config/firestore')
+const auth = require('../config/authMiddleware')
 const {getAll, getById, getByArea, getByIngrediente, getByTipo, getAllAreas, getAllIngredientes, getAllTipos, create} = require('../models/comidaModel')
 
 router.get('/comidas', auth, async (req, res) => {
@@ -19,12 +19,12 @@ router.get('/comidas/:id', auth, async (req,res) =>{
         const comida = await getById(id);
         res.json(comida);
     }
-    catch{(error)
+    catch(error){
         res.status(500).json({error: error.message});
     }
 });
 
-router.get('comidas/area', auth, async (req,res) => {
+router.get('/comidas/area', auth, async (req,res) => {
     try{
         const areas = await getAllAreas();
         res.json(areas);
@@ -34,7 +34,7 @@ router.get('comidas/area', auth, async (req,res) => {
     }
 });
 
-router.get('comidas/tipo', auth, async (req,res) => {
+router.get('/comidas/tipo', auth, async (req,res) => {
     try{
         const tipos = await getAllTipos();
         res.json(tipos);
@@ -44,7 +44,7 @@ router.get('comidas/tipo', auth, async (req,res) => {
     }
 });
 
-router.get('comidas/ingrediente', auth, async (req,res) => {
+router.get('/comidas/ingrediente', auth, async (req,res) => {
     try{
         const ingredientes = await getAllIngredientes();
         res.json(ingredientes);
@@ -102,4 +102,4 @@ router.post('/comidas', auth, async(req, res) => {
 
 });
 
-modulde.exports = router
+module.exports = router

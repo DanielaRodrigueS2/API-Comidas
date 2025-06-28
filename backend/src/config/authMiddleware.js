@@ -1,4 +1,4 @@
-const {admin} = require('./firestore')
+const admin = require('./firestore')
 
 async function authMiddleware(req, res, next) {
     const authHeader = req.headers.authorization;
