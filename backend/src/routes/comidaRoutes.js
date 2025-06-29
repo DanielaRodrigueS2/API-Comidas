@@ -3,6 +3,7 @@ const router = express.Router();
 const auth = require('../config/authMiddleware');
 const {getAll, getById, getByArea, getByIngrediente, getByTipo, getAllAreas, getAllIngredientes, getAllTipos, create} = require('../models/comidaModel');
 
+
 router.get('/comidas', auth, async (req, res) => {
     try{
         const comidas = await getAll()

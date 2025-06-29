@@ -2,6 +2,7 @@ const admin = require('firebase-admin');
 const db = admin.firestore();
 
 const collection = db.collection('comidas');
+const cacheDados = {};
 
 const validaString = (str) =>{
     if (typeof str === 'string' && str.trim().length > 0 && str.length <= 100){
@@ -37,6 +38,8 @@ module.exports = {
     },
 
     async getAllAreas(){
+        if (cacheDados.area) return cacheDados.area
+        
         try{
             const snapshot = await collection.get();
             const areasSet = new Set();
@@ -49,15 +52,24 @@ module.exports = {
                 }
 
             })
+            
+            cacheDados.area = Array.from(areasSet);
 
-            return Array.from(areasSet);
+            setTimeout(() => {
+                delete cacheDados.area
+            }, 2 * 60 * 1000)
+
+            return cacheDados.area;
         }
         catch(error){
             throw new Error(`Erro ao retonar areas  ${error}`)
         }
+
     },
 
     async getAllTipos(){
+        if (cacheDados.tipo) return cacheDados.tipo;
+        
         try{
             const snapshot = await collection.get();
             const tiposSet = new Set();
@@ -71,7 +83,13 @@ module.exports = {
 
             })
 
-            return Array.from(tiposSet);
+            cacheDados.tipo = Array.from(tiposSet);
+
+            setTimeout(() => {
+                delete cacheDados.tipo
+            }, 2 * 60 * 1000)
+
+            return cacheDados.tipo;
         }
         catch(error){
             throw new Error(`Erro ao retonar tipos  ${error}`)
@@ -79,6 +97,9 @@ module.exports = {
     },
 
     async getAllIngredientes(){
+
+        if (cacheDados.ingrediente) return cacheDados.ingrediente
+        
         try{
             console.log('Entrei aqui em getAllingredientes');
             const snapshot = await collection.get();
@@ -93,7 +114,13 @@ module.exports = {
 
             })
 
-            return Array.from(ingredienteSet);
+            cacheDados.ingrediente = Array.from(ingredienteSet);
+
+            setTimeout(() => {
+                delete cacheDados.ingrediente
+            }, 2 * 60 * 1000)
+
+            return cacheDados.ingrediente;
         }
         catch(error){
             throw new Error(`Erro ao retonar ingredientes  ${error}`)
