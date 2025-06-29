@@ -181,6 +181,11 @@ module.exports = {
         try{
             const docRef = await collection.add(dadosProntos);
             const newDoc = await docRef.get();
+
+            delete cacheDados.area;
+            delete cacheDados.tipo;
+            delete cacheDados.ingrediente;
+
             return {id: docRef.id, ...newDoc.data()};
         }
         catch(eroor){
