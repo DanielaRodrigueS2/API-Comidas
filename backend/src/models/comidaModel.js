@@ -103,7 +103,7 @@ module.exports = {
     async getByArea(area){
         if(!validaString(area)) throw new Error('String inválida');
         try{    
-            const snapshot = await collection.where('area', '==', area).get();
+            const snapshot = await collection.where('area', '==', area.toLowerCase()).get();
             const comidas = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
             return comidas;
         }
@@ -115,7 +115,7 @@ module.exports = {
     async getByTipo(tipo){
         if(!validaString(tipo)) throw new Error('String inválida')
         try{
-            const snapshot = await collection.where('tipo', '==', tipo).get();
+            const snapshot = await collection.where('tipo', '==', tipo.toLowerCase()).get();
             const comidas = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
             return comidas;
         }
@@ -127,7 +127,7 @@ module.exports = {
     async getByIngrediente(ingrediente){  
         if(!validaString(ingrediente)) throw new Error('String inválida');
         try{
-            const snapshot = await collection.where('ingrediente', 'array-contains', ingrediente).get();
+            const snapshot = await collection.where('ingrediente', 'array-contains', ingrediente.toLowerCase()).get();
             const comidas = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
             return comidas;
         }
@@ -144,8 +144,15 @@ module.exports = {
         if(!validaString(area) || !validaString(preparo) || !validaString(nome) || !validaString(tipo)) throw new Error('Aera, preparo, nome e tipo devem ser Strings');
         if(!Array.isArray(ingrediente) || ingrediente.some(i => !validaString(i))) throw new Error('Ingrediente deve ser uma array de strings');
 
+        const dadosProntos = {
+            ...dados,
+            area: dados.area.toLowerCase(),
+            tipo: dados.tipo.toLowerCase(),
+            ingrediente: dados.ingrediente.map(i => i.toLowerCase())
+        }
+
         try{
-            const docRef = await collection.add(dados);
+            const docRef = await collection.add(dadosProntos);
             const newDoc = await docRef.get();
             return {id: docRef.id, ...newDoc.data()};
         }

@@ -23,11 +23,11 @@ function CadastroComida({ onclose }){
     const handleSubmit = async (e) =>{
         e.preventDefault();
         const dados = {
-            area,
-            nome,
-            preparo,
-            tipo,
-            ingrediente: listaIngredientes
+            area: area.trim().toLowerCase(),
+            nome: nome.trim(),
+            preparo: preparo.trim(),
+            tipo: tipo.trim().toLowerCase(),
+            ingrediente: listaIngredientes.map(i => i.trim().toLowerCase())
         };
 
         const token = localStorage.getItem('token')
