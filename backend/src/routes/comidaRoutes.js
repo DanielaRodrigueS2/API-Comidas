@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../config/authMiddleware')
-const {getAll, getById, getByArea, getByIngrediente, getByTipo, getAllAreas, getAllIngredientes, getAllTipos, create} = require('../models/comidaModel')
+const auth = require('../config/authMiddleware');
+const {getAll, getById, getByArea, getByIngrediente, getByTipo, getAllAreas, getAllIngredientes, getAllTipos, create} = require('../models/comidaModel');
 
 router.get('/comidas', auth, async (req, res) => {
     try{
@@ -13,16 +13,6 @@ router.get('/comidas', auth, async (req, res) => {
     }
 });
 
-router.get('/comidas/:id', auth, async (req,res) =>{
-    const {id} = req.params
-    try{
-        const comida = await getById(id);
-        res.json(comida);
-    }
-    catch(error){
-        res.status(500).json({error: error.message});
-    }
-});
 
 router.get('/comidas/area', auth, async (req,res) => {
     try{
@@ -45,6 +35,7 @@ router.get('/comidas/tipo', auth, async (req,res) => {
 });
 
 router.get('/comidas/ingrediente', auth, async (req,res) => {
+    console.log('entrei aqui')
     try{
         const ingredientes = await getAllIngredientes();
         res.json(ingredientes);
@@ -90,6 +81,17 @@ router.get('/comidas/ingrediente/:ingrediente', auth, async (req, res) => {
     
 });
 
+router.get('/comidas/:id', auth, async (req,res) =>{
+    const {id} = req.params
+    try{
+        const comida = await getById(id);
+        res.json(comida);
+    }
+    catch(error){
+        res.status(500).json({error: error.message});
+    }
+});
+
 router.post('/comidas', auth, async(req, res) => {
     const dados = req.body;
     try{
@@ -101,5 +103,6 @@ router.post('/comidas', auth, async(req, res) => {
     }
 
 });
+
 
 module.exports = router

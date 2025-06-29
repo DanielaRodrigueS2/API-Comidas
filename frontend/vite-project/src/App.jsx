@@ -136,13 +136,13 @@ function App() {
       let url  = ''
 
       if(state.filtros.Tipo == 'Ingrediente Principal'){
-        url = `${URL_API}/comida/ingrediente/${state.filtros.Valor}`
+        url = `${URL_API}/comidas/ingrediente/${state.filtros.Valor}`
       }
       else if(state.filtros.Tipo == 'Categoria'){
-        url = `${URL_API}/comida/tipo/${state.filtros.Valor}`
+        url = `${URL_API}/comidas/tipo/${state.filtros.Valor}`
       }
       else if(state.filtros.Tipo == 'Local'){
-        url = `${URL_API}/comida/area/${state.filtros.Valor}`
+        url = `${URL_API}/comidas/area/${state.filtros.Valor}`
       }
 
       if (!url) return;
@@ -169,7 +169,7 @@ function App() {
     const resgataComida = async () => {
       try{
 
-        const url = `${URL_API}/comidas/${item.uid}`
+        const url = `${URL_API}/comidas/${item.id}`
         const resposta = await fetch(url, {headers: {'authorization': `Bearer ${token}`}})
         const json = await resposta.json()
         setComida(json)

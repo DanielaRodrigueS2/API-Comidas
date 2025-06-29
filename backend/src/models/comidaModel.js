@@ -11,7 +11,7 @@ const validaString = (str) =>{
 
 }
 
-const ComidaModel = {
+module.exports = {
     async getAll(){
         try{
             const snapshot = await collection.get();
@@ -19,11 +19,12 @@ const ComidaModel = {
             return comidas;
         }
         catch(eroor){
-            throw new Error('Erro ao encontrrar todas as comidas', eroor);
+            throw new Error(`Erro ao encontrrar todas as comidas  ${eroor}`);
         }
     },
 
-    async getById(){
+    async getById(id){
+        console.log('entrou aqui getByID');
         try{
             const doc = await collection.doc(id).get();
             if (!doc.exists) throw new Error('Comida Inexistente');
@@ -31,7 +32,7 @@ const ComidaModel = {
             return{id: doc.id, ...doc.data()}
         }
         catch(error){
-            throw new Error('Comida não encontrada');
+            throw new Error(`Comida não encontrada  ${error}`);
         }
     },
 
@@ -52,7 +53,7 @@ const ComidaModel = {
             return Array.from(areasSet);
         }
         catch(error){
-            throw new Error('Erro ao retonar areas')
+            throw new Error(`Erro ao retonar areas  ${error}`)
         }
     },
 
@@ -73,12 +74,13 @@ const ComidaModel = {
             return Array.from(tiposSet);
         }
         catch(error){
-            throw new Error('Erro ao retonar tipos')
+            throw new Error(`Erro ao retonar tipos  ${error}`)
         }
     },
 
     async getAllIngredientes(){
         try{
+            console.log('Entrei aqui em getAllingredientes');
             const snapshot = await collection.get();
             const ingredienteSet = new Set();
             
@@ -94,7 +96,7 @@ const ComidaModel = {
             return Array.from(ingredienteSet);
         }
         catch(error){
-            throw new Error('Erro ao retonar ingredientes')
+            throw new Error(`Erro ao retonar ingredientes  ${error}`)
         }
     },
     
@@ -106,31 +108,31 @@ const ComidaModel = {
             return comidas;
         }
         catch(eroor){
-            throw new Error('Erro ao encontrrar comidas por area', eroor);
+            throw new Error(`Erro ao encontrrar comidas por area  ${eroor}`);
         }
     },
 
     async getByTipo(tipo){
-        if(!validaString(area)) throw new Error('String inválida')
+        if(!validaString(tipo)) throw new Error('String inválida')
         try{
             const snapshot = await collection.where('tipo', '==', tipo).get();
             const comidas = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
             return comidas;
         }
         catch(eroor){
-            throw new Error('Erro ao encontrrar todos os tipos', eroor);
+            throw new Error(`Erro ao encontrrar todos os tipos ${eroor} `);
         }
     },
 
     async getByIngrediente(ingrediente){  
-        if(!validaString(area)) throw new Error('String inválida');
+        if(!validaString(ingrediente)) throw new Error('String inválida');
         try{
             const snapshot = await collection.where('ingrediente', 'array-contains', ingrediente).get();
             const comidas = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
             return comidas;
         }
         catch(eroor){
-            throw new Error('Erro ao encontrrar comidas com esse ingrediente', eroor);
+            throw new Error(`Erro ao encontrrar comidas com esse ingrediente ${eroor}`);
         }
     },
 
@@ -144,15 +146,13 @@ const ComidaModel = {
 
         try{
             const docRef = await collection.add(dados);
-            const newDoc = docRef.get();
+            const newDoc = await docRef.get();
             return {id: docRef.id, ...newDoc.data()};
         }
         catch(eroor){
-            throw new Error('Erro criar comida', eroor);
+            throw new Error(`Erro criar comida ${eroor}`);
         }
     },
 
 
 };
-
-module.exports = ComidaModel;
