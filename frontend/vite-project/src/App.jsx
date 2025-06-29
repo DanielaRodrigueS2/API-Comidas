@@ -97,12 +97,14 @@ function App() {
 
   // Coletar todos os ingredientes, categorias e locais/areas disponiveis para filtro de comidas
   useEffect(() =>{
+    if(!token) return;
+    console.log('token: ',token)
     const carregarListas = async () =>{
       try{
         const [ingredientes, categorias, locais] = await Promise.all([
-          fetch(`${URL_API}/comidas/ingrediente`, {headers: {Authorization: `Bearer ${token}` }}),
-          fetch(`${URL_API}/comidas/tipo`, {headers: {Authorization: `Bearer ${token}` }}),
-          fetch(`${URL_API}/comidas/area`, {headers: {Authorization: `Bearer ${token}` }}),
+          fetch(`${URL_API}/comidas/ingrediente`, {headers: {'authorization': `Bearer ${token}` }}),
+          fetch(`${URL_API}/comidas/tipo`, {headers: {'authorization': `Bearer ${token}` }}),
+          fetch(`${URL_API}/comidas/area`, {headers: {'authorization': `Bearer ${token}` }}),
         ])
 
         const [ingredientesJSON, categoriasJSON, locaisJSON] = await Promise.all([
@@ -124,7 +126,7 @@ function App() {
     }
     carregarListas()
 
-  }, []) 
+  }, [token]) 
 
   // Função responsável por buscar os valores dependendo do tipo e valor
   const comunicacao = async () =>{
@@ -145,7 +147,7 @@ function App() {
 
       if (!url) return;
 
-      const resposta = await fetch(url, {headers: {Authorization: `Bearer ${token}`}})
+      const resposta = await fetch(url, {headers: {'authorization': `Bearer ${token}`}})
       const json = await resposta.json()
       dispatch({type: 'SET_RESULTADOS', payload: json || []})
 
@@ -168,7 +170,7 @@ function App() {
       try{
 
         const url = `${URL_API}/comidas/${item.uid}`
-        const resposta = await fetch(url, {headers: {Authorization: `Bearer ${token}`}})
+        const resposta = await fetch(url, {headers: {'authorization': `Bearer ${token}`}})
         const json = await resposta.json()
         setComida(json)
         console.log('Comida: ',comida)
@@ -203,6 +205,7 @@ function App() {
 
   // armazenar token
   useEffect(() =>{
+    console.log(token) //teste
     const tokenNoStorage = localStorage.getItem('token');
     if (tokenNoStorage){
       setToken(tokenNoStorage);
@@ -213,6 +216,11 @@ function App() {
     localStorage.setItem('token', token);
     setToken(token)
   }
+
+  const funcaoSair = () =>{
+    localStorage.removeItem('token');
+    setToken(null);
+  }
   
   //Se não houver token, aparece a tela de login
   if(!token){
@@ -220,8 +228,6 @@ function App() {
   }
 
   return (
-
-
 
     <div className={`geral ${tema === 'Normal' ? 'normal' : 'reverso'}`}>
       <div className='header'>
@@ -235,9 +241,9 @@ function App() {
 
           <select {...register('Valor', {required: true})}>
             <option value=''>Selecione o filtro</option>
-            {watchTipo === 'Ingrediente Principal' && listas.ingredientes.map((item) => (<option key={item} value={item}>{item}</option>))}
-            {watchTipo === 'Categoria' && listas.categorias.map((item) => (<option key={item} value={item}>{item}</option>))}
-            {watchTipo === 'Local' && listas.locais.map((item) => (<option key={item} value={item}>{item}</option>))}
+            {watchTipo === 'Ingrediente Principal' && Array.isArray(listas.ingredientes) && listas.ingredientes.map((item) => (<option key={item} value={item}>{item}</option>))}
+            {watchTipo === 'Categoria' && Array.isArray(listas.categorias) && listas.categorias.map((item) => (<option key={item} value={item}>{item}</option>))}
+            {watchTipo === 'Local' && Array.isArray(listas.locais) && listas.locais.map((item) => (<option key={item} value={item}>{item}</option>))}
           </select>
 
           <input type='submit'/>
@@ -247,6 +253,8 @@ function App() {
         <button onClick={trocarTema} className='BotaoTroca'>
             Trocar Tema (Atual: {tema})
         </button>
+
+        <button onClick={funcaoSair}>Deslogar</button>
       </div>
 
       <div className='main'>

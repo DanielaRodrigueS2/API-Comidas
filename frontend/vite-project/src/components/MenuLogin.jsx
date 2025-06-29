@@ -10,10 +10,12 @@ function MenuLogin({setToken}){
     const [erro,setErro] = useState('');
 
     const handleLogin = async (e) => {
-        e.preventDefaut();
-
+        e.preventDefault();  
+        console.log(email,senha)
         try{
+            
             const usuario = await signInWithEmailAndPassword(auth, email, senha);
+            console.log(usuario);
             const token = await usuario.user.getIdToken();
             
             setToken(token);
