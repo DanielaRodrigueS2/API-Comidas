@@ -12,7 +12,7 @@ function SwiperComponente(props){
         >
             {props.resultados.map((item) => (
                 <SwiperSlide key={item.id} onClick={() => props.clicado(item)}>
-                    <img src={item.strMealThumb} alt={item.nome} className='img'/>
+                    <img src={'../../public/comida.jpg'} alt={item.nome} className='img'/>
                 </SwiperSlide>
             ))} 
 

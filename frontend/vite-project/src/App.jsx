@@ -6,6 +6,7 @@ import SwiperComponente from './components/SwiperComponente'
 import { ContextoTema} from './contexts/ContextoTema'
 import CardComida from './components/CardComida'
 import MenuLogin from './components/MenuLogin'
+import CadastroComida from './components/CadastroComida'
 
 const URL_API = "http://localhost:3000"
 
@@ -61,6 +62,9 @@ const reducer =  (state, action) =>{
 }
 
 function App() {
+
+  //visibilidade do menu de cadastrar comidas
+  const [mostrarMenuComida, setMostrarMenuComida] = useState(false)
 
   // token 
   const [token, setToken] = useState(null)
@@ -259,8 +263,11 @@ function App() {
 
       <div className='main'>
         {state.resultados.length > 0 && <SwiperComponente clicado={setItem} resultados={state.resultados} style={{width: '80%', height: '80%'}}></SwiperComponente>}
-        
       </div>
+
+      <button onClick={() => setMostrarMenuComida(true)}>Cadastrar Comidinha</button>
+
+      {mostrarMenuComida && <CadastroComida onclose={() => setMostrarMenuComida(false)}></CadastroComida>}
       {item != null && comida && <CardComida clicado={setItem} comida={comida}></CardComida>}
 
     </div>
