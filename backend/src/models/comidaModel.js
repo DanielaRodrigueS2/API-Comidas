@@ -1,8 +1,8 @@
 const admin = require('firebase-admin');
 const db = admin.firestore();
-
 const collection = db.collection('comidas');
-const cacheDados = {};
+const logger = require('../config/logger')
+
 
 const validaString = (str) =>{
     if (typeof str === 'string' && str.trim().length > 0 && str.length <= 100){
@@ -53,13 +53,9 @@ module.exports = {
 
             })
             
-            cacheDados.area = Array.from(areasSet);
+            area = Array.from(areasSet);
 
-            setTimeout(() => {
-                delete cacheDados.area
-            }, 2 * 60 * 1000)
-
-            return cacheDados.area;
+            return area;
         }
         catch(error){
             throw new Error(`Erro ao retonar areas  ${error}`)
@@ -83,13 +79,9 @@ module.exports = {
 
             })
 
-            cacheDados.tipo = Array.from(tiposSet);
+            tipo = Array.from(tiposSet);
 
-            setTimeout(() => {
-                delete cacheDados.tipo
-            }, 2 * 60 * 1000)
-
-            return cacheDados.tipo;
+            return tipo;
         }
         catch(error){
             throw new Error(`Erro ao retonar tipos  ${error}`)
@@ -114,13 +106,9 @@ module.exports = {
 
             })
 
-            cacheDados.ingrediente = Array.from(ingredienteSet);
+            ingrediente = Array.from(ingredienteSet);
 
-            setTimeout(() => {
-                delete cacheDados.ingrediente
-            }, 2 * 60 * 1000)
-
-            return cacheDados.ingrediente;
+            return ingrediente;
         }
         catch(error){
             throw new Error(`Erro ao retonar ingredientes  ${error}`)
@@ -186,9 +174,11 @@ module.exports = {
             delete cacheDados.tipo;
             delete cacheDados.ingrediente;
 
+            logger.info(`Comida : ${nome}, criada com sucesso`);
             return {id: docRef.id, ...newDoc.data()};
         }
         catch(eroor){
+            logger.error(`Erro ao criar comida : ${nome}, erro: ${eroor}`);
             throw new Error(`Erro criar comida ${eroor}`);
         }
     },
