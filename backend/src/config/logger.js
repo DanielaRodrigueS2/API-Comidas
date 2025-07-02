@@ -10,9 +10,9 @@ const logger = createLogger({
     ),
 
     transports:[
-        new transports.console(),
-        new transports.File({ filename: 'erros.log', level: 'error'}),
-        new transports.File({filename: 'todoslogs.log'})
+        new transports.Console(),
+        new transports.File({ filename: 'config/erros.log', level: 'error'}),
+        new transports.File({filename: 'config/todoslogs.log'})
     ],
 
 });
