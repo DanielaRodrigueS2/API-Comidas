@@ -15,9 +15,23 @@ function MenuLogin({setToken}){
         try{
             
             const usuario = await signInWithEmailAndPassword(auth, email, senha);
-            console.log(usuario);
             const token = await usuario.user.getIdToken();
+
+            const resposta = await fetch('http://localhost:3000/login', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({idToken: token}),
+            })
             
+            if(!resposta.ok){
+                const erro = await resposta.json();
+                setErro(erro.error || 'Erro ao tentar entrar no servidor');
+                return;
+            }
+
+            const dados = await resposta.json();
+            console.log('Usuário foi aprovado pela rota /login no backend, dados:, ' , dados.user)
+
             setToken(token);
             setErro('');
             alert('Login foi realizado');

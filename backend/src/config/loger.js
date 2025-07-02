@@ -1,10 +1,14 @@
-const fs = require('fs')
+const {createLogger, format, transports} = require('winston')
 
-function evento(msg){
-    const mensagem = `${new Date().toISOString()}, mensagem gerada: ${msg}\n`
-    fs.appendFile('logs.txt', mensagem, (erro) => {
-        if (erro) console.log('Houve algum erro ao gravar esse log,' , erro)
-    });
-}
+const logger = createLogger({
+    level: 'info',
+    format: format.combine(
+        format.timestamp(),
+        format.printf(() => {
+            
+        })
 
-module.exports = { evento }
+    )
+
+
+})
