@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const cache = require('express-redis-cache')() 
 const auth = require('../config/authMiddleware');
 const {getAll, getById, getByArea, getByIngrediente, getByTipo, getAllAreas, getAllIngredientes, getAllTipos, create} = require('../models/comidaModel');
 
@@ -15,7 +16,7 @@ router.get('/comidas', auth, async (req, res) => {
 });
 
 
-router.get('/comidas/area', auth, async (req,res) => {
+router.get('/comidas/area', auth, cache.route({expire: 300}), async (req,res) => {
     try{
         const areas = await getAllAreas();
         res.json(areas);
@@ -25,7 +26,7 @@ router.get('/comidas/area', auth, async (req,res) => {
     }
 });
 
-router.get('/comidas/tipo', auth, async (req,res) => {
+router.get('/comidas/tipo', auth, cache.route({expire: 300}), async (req,res) => {
     try{
         const tipos = await getAllTipos();
         res.json(tipos);
@@ -35,7 +36,7 @@ router.get('/comidas/tipo', auth, async (req,res) => {
     }
 });
 
-router.get('/comidas/ingrediente', auth, async (req,res) => {
+router.get('/comidas/ingrediente', auth, cache.route({expire: 300}), async (req,res) => {
     console.log('entrei aqui')
     try{
         const ingredientes = await getAllIngredientes();
@@ -97,6 +98,7 @@ router.post('/comidas', auth, async(req, res) => {
     const dados = req.body;
     try{
         const comidas = await create(dados)
+        cache.flush();
         res.status(201).json(comidas)
     }
     catch(error){
