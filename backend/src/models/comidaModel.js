@@ -1,5 +1,4 @@
-const admin = require('firebase-admin');
-const db = admin.firestore();
+const {admin, db} = require('../config/firestore');
 const collection = db.collection('comidas');
 const logger = require('../config/logger')
 
@@ -25,7 +24,6 @@ module.exports = {
     },
 
     async getById(id){
-        console.log('entrou aqui getByID');
         try{
             const doc = await collection.doc(id).get();
             if (!doc.exists) throw new Error('Comida Inexistente');
@@ -38,7 +36,6 @@ module.exports = {
     },
 
     async getAllAreas(){
-        if (cacheDados.area) return cacheDados.area
         
         try{
             const snapshot = await collection.get();
@@ -53,7 +50,7 @@ module.exports = {
 
             })
             
-            area = Array.from(areasSet);
+            const area = Array.from(areasSet);
 
             return area;
         }
@@ -64,7 +61,6 @@ module.exports = {
     },
 
     async getAllTipos(){
-        if (cacheDados.tipo) return cacheDados.tipo;
         
         try{
             const snapshot = await collection.get();
@@ -79,7 +75,7 @@ module.exports = {
 
             })
 
-            tipo = Array.from(tiposSet);
+            const tipo = Array.from(tiposSet);
 
             return tipo;
         }
@@ -90,7 +86,6 @@ module.exports = {
 
     async getAllIngredientes(){
 
-        if (cacheDados.ingrediente) return cacheDados.ingrediente
         
         try{
             console.log('Entrei aqui em getAllingredientes');
@@ -106,7 +101,7 @@ module.exports = {
 
             })
 
-            ingrediente = Array.from(ingredienteSet);
+            const ingrediente = Array.from(ingredienteSet);
 
             return ingrediente;
         }
@@ -170,9 +165,6 @@ module.exports = {
             const docRef = await collection.add(dadosProntos);
             const newDoc = await docRef.get();
 
-            delete cacheDados.area;
-            delete cacheDados.tipo;
-            delete cacheDados.ingrediente;
 
             logger.info(`Comida : ${nome}, criada com sucesso`);
             return {id: docRef.id, ...newDoc.data()};

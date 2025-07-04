@@ -41,6 +41,9 @@ router.get('/comidas/ingrediente', auth, cache.route({expire: 300}), async (req,
     console.log('entrei aqui')
     try{
         const ingredientes = await getAllIngredientes();
+        if(!ingredientes || ingredientes.length ===0 ){
+            return res.status(404).json({error: 'Nenhum ingrediente foi retornado'})
+        }
         res.json(ingredientes);
     }
     catch(error){
