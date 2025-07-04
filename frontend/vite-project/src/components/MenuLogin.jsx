@@ -53,7 +53,6 @@ function MenuLogin({setToken}){
                 <input type='password' value={senha} onChange={(e) => setSenha(e.target.value)}></input>
                 <button type='submit'>Realizar Login</button>
             </form>
-            <button>Cadastro</button>
 
             {erro && <p className='erro'>{erro}</p>}
         </div>

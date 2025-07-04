@@ -265,7 +265,7 @@ function App() {
         {state.resultados.length > 0 && <SwiperComponente clicado={setItem} resultados={state.resultados} style={{width: '80%', height: '80%'}}></SwiperComponente>}
       </div>
 
-      <button onClick={() => setMostrarMenuComida(true)}>Cadastrar Comidinha</button>
+      <button onClick={() => setMostrarMenuComida(true)} className='cadastrar'>Cadastrar Comidinha</button>
 
       {mostrarMenuComida && <CadastroComida onclose={() => setMostrarMenuComida(false)}></CadastroComida>}
       {item != null && comida && <CardComida clicado={setItem} comida={comida}></CardComida>}

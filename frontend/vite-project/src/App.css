@@ -53,3 +53,8 @@ select, input, button{
     border-radius: 2px;
     border-color: black;
 }
+
+.cadastrar{
+    padding: 5px;
+    margin-bottom: 30px;
+}

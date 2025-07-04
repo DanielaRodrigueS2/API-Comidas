@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const admin = require('../config/firestore')
+const { admin } = require('../config/firestore')
 
 router.post('/login', async (req,res) => {
     const {idToken} = req.body;
